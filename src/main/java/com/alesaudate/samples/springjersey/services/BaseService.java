@@ -23,6 +23,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import com.alesaudate.samples.springjersey.entities.BaseEntity;
 import com.alesaudate.samples.springjersey.entities.EntityCollection;
@@ -101,6 +103,8 @@ public abstract class BaseService<T extends BaseEntity & HATEOASEntity, C extend
 			collection.addLink(buildPageLink(page - 1, "prevPage", uriInfo));
 		}
 		
+		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		collection.addLink(buildPageLink(totalPages, "u" + u.getUsername(), uriInfo));
 		return collection;
 	}	
 	
